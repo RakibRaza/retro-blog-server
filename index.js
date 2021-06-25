@@ -39,10 +39,19 @@ client.connect((err) => {
       res.send(collection);
     });
   });
-  // Get Blog
+  // Get Blogs
   app.get('/blogs', (req, res) => {
     blogCollection.find({}).toArray((err, collection) => res.send(collection))
   })
+  app.get('/blog/:id', (req, res) => {
+    blogCollection.find({ _id: ObjectId(req.params.id) }).toArray((err, collection) => res.send(collection))
+  })
+  // Delete Blog
+  app.delete("/deleteBlog/:id", (req, res) => {
+    blogCollection
+      .deleteOne({ _id: ObjectId(req.params.id) })
+      .then((result) => res.send(result.deletedCount > 0));
+  });
 
 });
 
